@@ -5,14 +5,29 @@ const { secret } = require('../config')
 class UserCtrl {
 
     async find(ctx) {
-        ctx.body = await User.find()
+        const { per_page = 10 } = ctx.query
+        const page = Math.max(1, ctx.query.page * 1) - 1
+        const perPage = Math.max(1, per_page * 1)
+        ctx.body = await User.find({
+            name: new RegExp(ctx.query.q)
+        }).limit(perPage).skip(page * perPage)
     }
 
     async findById(ctx) {
-        const { fields } = ctx.query
+        const { fields = '' } = ctx.query
         // 查询两个字段之间要加一个   " +"
-        const selectFields = fields && fields.split(';').filter(f => f).map(f => ' +' + f).join('')
+        const selectFields = fields.split(';').filter(f => f).map(f => ' +' + f).join('')
+        const populateStr = fields.split(';').filter(f => f).map(f => {
+            if (f === 'educations') {
+                return 'employments.job,employments.company'
+            }
+            if (f === 'educations') {
+                return 'educations.major,educations.school'
+            }
+            return f
+        })
         const user = await User.findById(ctx.params.id).select(selectFields)
+            .populate(populateStr)
         if (!user) {
             ctx.throw(404, '用户不存在')
         } else {
@@ -89,7 +104,7 @@ class UserCtrl {
     async listFollowing(ctx) {
         const user = await User.findById(ctx.params.id).select('+following').populate('following')
         if (!user) {
-            ctx.throw(404)
+            ctx.throw(404, '用户不存在')
         }
         ctx.body = user.following
     }
@@ -117,9 +132,35 @@ class UserCtrl {
     async unFollow(ctx) {
         const me = await User.findById(ctx.state.user._id).select('+following')
         const index = me.following.map(id => id.toString()).indexOf(ctx.params.id)
-        console.log(index)
         if (index > -1) {
             me.following.splice(index, 1)
+            me.save()
+        }
+        ctx.status = 204
+    }
+    //判断话题是否存在,存在则返回用户关注的话题
+    async listFollowingTopics(ctx) {
+        const user = await User.findById(ctx.params.id).select('+followingTopics').populate('followingTopics')
+        if (!user) {
+            ctx.throw(404, '用户不存在')
+        }
+        ctx.body = user.followingTopics
+    }
+    //关注话题
+    async followTopic(ctx) {
+        const me = await User.findById(ctx.state.user._id).select('+followingTopics')
+        if (!(me.followingTopics.map(id => id.toString()).includes(ctx.params.id))) {
+            me.followingTopics.push(ctx.params.id)
+            me.save()
+        }
+        ctx.status = 204
+    }
+    //取消关注话题
+    async unFollowTopic(ctx) {
+        const me = await User.findById(ctx.state.user._id).select('+followingTopics')
+        const index = me.followingTopics.map(id => id.toString()).indexOf(ctx.params.id)
+        if (index > -1) {
+            me.followingTopics.splice(index, 1)
             me.save()
         }
         ctx.status = 204
