@@ -29,7 +29,6 @@ class QuestionCtl {
             title: { type: 'string', required: true },
             description: { type: 'string', required: false }
         })
-        console.log(1)
         await ctx.state.question.update(ctx.request.body)
         const question = await Question.findById(ctx.params.id)
         ctx.body = question

@@ -20,7 +20,7 @@ class AnswerCtr {
         ctx.verifyParams({
             content: { type: 'string', required: true },
         })
-        const answerer = ctx.state.user
+        const answerer = ctx.state.user._id
         const { questionId } = ctx.params
         const answer = await new Answer({ ...ctx.request.body, answerer, questionId }).save()
         ctx.body = answer
