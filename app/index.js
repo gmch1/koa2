@@ -29,6 +29,6 @@ app.use(koabody({
 app.use(parameter(app))
 routing(app)
 
-app.listen(3000, (err) => {
+app.listen(2048, (err) => {
     console.log('runnig')
 })
