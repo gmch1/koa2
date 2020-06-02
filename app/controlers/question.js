@@ -19,7 +19,8 @@ class QuestionCtl {
     async create(ctx) {
         ctx.verifyParams({
             title: { type: 'string', required: true },
-            description: { type: 'string', required: false }
+            description: { type: 'string', required: false },
+            img: { type: 'string', required: false },
         })
         const question = await new Question({ ...ctx.request.body, questioner: ctx.state.user._id }).save()
         ctx.body = question
@@ -27,7 +28,8 @@ class QuestionCtl {
     async update(ctx) {
         ctx.verifyParams({
             title: { type: 'string', required: true },
-            description: { type: 'string', required: false }
+            description: { type: 'string', required: false },
+            img: { type: 'string', required: false },
         })
         await ctx.state.question.update(ctx.request.body)
         const question = await Question.findById(ctx.params.id)
