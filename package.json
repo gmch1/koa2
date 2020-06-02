@@ -19,6 +19,7 @@
     "koa-parameter": "^3.0.1",
     "koa-router": "^8.0.8",
     "koa-static": "^5.0.0",
-    "mongoose": "^5.9.9"
+    "mongoose": "^5.9.9",
+    "request": "^2.88.2"
   }
 }

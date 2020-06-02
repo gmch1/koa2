@@ -20,6 +20,7 @@ class QuestionCtl {
         ctx.verifyParams({
             title: { type: 'string', required: true },
             description: { type: 'string', required: false },
+            content: { type: 'string', required: false },
             img: { type: 'string', required: false },
         })
         const question = await new Question({ ...ctx.request.body, questioner: ctx.state.user._id }).save()
@@ -29,6 +30,7 @@ class QuestionCtl {
         ctx.verifyParams({
             title: { type: 'string', required: true },
             description: { type: 'string', required: false },
+            content: { type: 'string', required: false },
             img: { type: 'string', required: false },
         })
         await ctx.state.question.update(ctx.request.body)

@@ -1,4 +1,5 @@
 const path = require('path')
+const request = require('request');
 
 class HomeCtl {
     index(ctx) {
