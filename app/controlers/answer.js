@@ -6,9 +6,10 @@ class AnswerCtr {
         const page = Math.max(1, ctx.query.page * 1) - 1
         const perPage = Math.max(1, per_page * 1)
         const q = new RegExp(ctx.query.q)
+
         ctx.body = await Answer
             .find({ content: q, questionId: ctx.params.questionId })
-            .limit(perPage).skip(page * perPage)
+            .limit(perPage).skip(page * perPage).populate('+ answerer ')
     }
     async findById(ctx) {
         const { fields = '' } = ctx.query
