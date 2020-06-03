@@ -4,7 +4,7 @@ const { Schema, model } = mongoose
 const commentSchema = new Schema({
     __v: { type: String, select: false },
     content: { type: String, required: true },
-    commentator: { type: Schema.Types.ObjectId, ref: 'User', required: true, select: false },
+    commentator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     questionId: { type: String, required: true },
     voteCount: { type: Number, required: true, default: 0 },
     answerId: { type: String, required: true },

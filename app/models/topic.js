@@ -5,7 +5,7 @@ const topicSchema = new Schema({
     __v: { type: String, select: false },
     name: { type: String, required: true },
     avatar_url: { type: String },
-    introduction: { type: String, select: false }
+    introduction: { type: String }
 }, { timestamps: true })
 
 module.exports = model('Topic', topicSchema)
