@@ -14,6 +14,9 @@ const userSchema = new Schema(
     },
     avatar_url: { type: String },
     headline: { type: String },
+    school: { type: String },
+    address: { type: String },
+    age: { type: String },
     locations: { type: [{ type: Schema.Types.ObjectId, ref: 'Topic' }] },
     business: { type: Schema.Types.ObjectId, ref: 'Topic' },
     employments: {
