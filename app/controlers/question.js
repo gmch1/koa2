@@ -75,8 +75,9 @@ class QuestionCtl {
       await next();
     } else if (question.questioner.toString() !== ctx.state.user._id) {
       ctx.throw(403, '没有权限');
+    }else{
+        await next();
     }
-    await next();
   }
 }
 
