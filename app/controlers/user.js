@@ -50,6 +50,12 @@ class UserCtrl {
     ctx.verifyParams({
       name: { type: 'string', required: true },
       password: { type: 'string', required: true },
+      avatar_url: { type: 'string', required: false },
+      gender: { type: 'string', required: false },
+      headline: { type: 'string', required: false },
+      address: { type: 'string', required: false },
+      school: { type: 'string', required: false },
+      age: { type: 'string', required: false },
     });
     const { name } = ctx.request.body;
     const repestedUser = await User.findOne({ name });
