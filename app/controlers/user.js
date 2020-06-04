@@ -94,10 +94,16 @@ class UserCtrl {
   }
 
   async checkOwner(ctx, next) {
-    if (ctx.params.id !== ctx.state.user._id) {
+    if (ctx.state.user.name === 'admin') {
+      await next();
+    } else if (
+      ctx.params.id !== ctx.state.user._id &&
+      ctx.params.id !== ctx.state.user._id
+    ) {
       ctx.throw(403, '没有权限');
+    } else {
+      await next();
     }
-    await next();
   }
 
   async login(ctx) {
